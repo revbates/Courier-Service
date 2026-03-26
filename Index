@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bates Courier - Request Delivery</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h1>🚚 Bates Courier - Request Delivery</h1>
+
+<input type="text" id="store" placeholder="Store Name" required>
+<input type="text" id="customer" placeholder="Customer Name" required>
+<input type="tel" id="phone" placeholder="Customer Phone" required>
+<input type="text" id="address" placeholder="Delivery Address" required>
+<textarea id="details" placeholder="Order Details" required></textarea>
+<select id="ready">
+  <option value="No">Not Ready</option>
+  <option value="Yes">Ready</option>
+</select>
+<input type="text" id="time" placeholder="Ready Time (Optional)">
+<textarea id="notes" placeholder="Notes (Optional)"></textarea>
+<button onclick="submitOrder()">Request Driver</button>
+
+<script>
+const endpoint = 'https://script.google.com/macros/s/AKfycbzRw18E_YYv5Gcl4mSffXQpTqFhIsYznDkQJytKg8nqgHYQvZg5cdy4e9ws4S87uUSf/exec';
+
+function submitOrder() {
+  const data = {
+    store: document.getElementById('store').value,
+    customer: document.getElementById('customer').value,
+    phone: document.getElementById('phone').value,
+    address: document.getElementById('address').value,
+    details: document.getElementById('details').value,
+    ready: document.getElementById('ready').value,
+    time: document.getElementById('time').value,
+    notes: document.getElementById('notes').value
+  };
+
+  fetch(endpoint, {
+    method: 'POST',
+    body: JSON.stringify(data)
+  })
+  .then(res => res.json())
+  .then(res => {
+    alert('Order submitted successfully!');
+    document.querySelectorAll('input, textarea').forEach(i => i.value = '');
+    document.getElementById('ready').value = 'No';
+  })
+  .catch(err => {
+    alert('Error submitting order. Please try again.');
+    console.error(err);
+  });
+}
+</script>
+
+</body>
+</html>
